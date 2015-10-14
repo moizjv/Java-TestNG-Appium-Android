@@ -14,7 +14,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -57,7 +57,7 @@ public class SampleSauceTest implements SauceOnDemandSessionIdProvider, SauceOnD
     public static Object[][] sauceBrowserDataProvider(Method testMethod) {
         return new Object[][]{
 //                new Object[]{"Android", "Samsung Galaxy S4 Emulator", "4.4", "sauce-storage:org.wordpress.android-4.5.2-APK4Fun.com.apk", "", "portrait", "1.4.11"}
-                new Object[]{"Android", "Android Emulator", "4.4", "sauce-storage:org.wordpress.android-4.5.2-APK4Fun.com.apk", "", "portrait", "1.4.11"}
+                new Object[]{"ios", "iPhone 6", "9.0", "/Users/moiz/workspace/appium/assets/TestApp7.1.app.zip", "", "portrait", "1.4.11"}
         };
     }
 
@@ -84,12 +84,12 @@ public class SampleSauceTest implements SauceOnDemandSessionIdProvider, SauceOnD
         capabilities.setCapability("app", app);
         capabilities.setCapability("browserName", browserName);
         capabilities.setCapability("deviceOrientation", deviceOrientation);
-        capabilities.setCapability("appiumVersion", appiumVersion);
+      //  capabilities.setCapability("appiumVersion", appiumVersion);
 
         capabilities.setCapability("name", "Java-TestNG-Appium-iOS");
 
-        webDriver.set(new AndroidDriver<WebElement>(
-                new URL("http://" + authentication.getUsername() + ":" + authentication.getAccessKey() + "@ondemand.saucelabs.com:80/wd/hub"),
+        webDriver.set(new IOSDriver<WebElement>(
+                new URL("http://127.0.0.1:4723/wd/hub"),
                 capabilities));
         String id = ((RemoteWebDriver) getWebDriver()).getSessionId().toString();
         sessionId.set(id);
@@ -109,9 +109,9 @@ public class SampleSauceTest implements SauceOnDemandSessionIdProvider, SauceOnD
     public void launchTest(String platformName, String deviceName, String platformVersion, String app, String browserName, String deviceOrientation, String appiumVersion) throws Exception {
         WebDriver driver = createDriver(platformName, deviceName, platformVersion, app, browserName, deviceOrientation, appiumVersion);
 
-        driver.findElement(By.id("org.wordpress.android:id/nux_username")).sendKeys("DummyUser");
-        driver.findElement(By.id("org.wordpress.android:id/nux_password")).sendKeys("DummyPassword");
-        driver.findElement(By.xpath("//android.widget.LinearLayout[1]/android.widget.FrameLayout[1]/android.widget.LinearLayout[1]/android.widget.ScrollView[1]/android.widget.LinearLayout[1]/android.widget.LinearLayout[2]/android.widget.RelativeLayout[4]")).click();
+        driver.findElements(By.className("UIATextField")).get(0).sendKeys("1");
+        driver.findElements(By.className("UIATextField")).get(1).sendKeys("2");
+        driver.findElement(By.id("ComputeSumButton")).click();
         
         driver.quit();
     }
